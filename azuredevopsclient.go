@@ -43,4 +43,6 @@ func createProject(pat string, project string) string {
 
 	fmt.Println(string(responseData))
 
+	return "id"
+
 }
