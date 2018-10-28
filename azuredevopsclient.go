@@ -2,6 +2,7 @@ package azuredevopsapi
 
 import (
 	"bytes"
+	"encoding/json"
 	"fmt"
 	"io/ioutil"
 	"log"
@@ -12,13 +13,19 @@ import (
 type Client struct {
 }
 
-func CreateProject(pat string, project string) string {
+type ProjectResponse struct {
+	ID     string `json:"id"`
+	Status string `json:"status"`
+	URL    string `json:"url"`
+}
 
-	var jsonFormat = "{ \"name\": \"alextestBuenas\", \"description\": \"Frabrikam travel app for Windows Phone\", \"capabilities\": { \"versioncontrol\": { \"sourceControlType\": \"Git\"}, \"processTemplate\": {  \"templateTypeId\": \"6b724908-ef14-45cf-84f8-768b5384da45\" }}}"
+func CreateProject(pat string, organization string, projectName string) ProjectResponse {
+
+	var jsonFormat = "{ \"name\": \"" + projectName + "\", \"description\": \"Frabrikam travel app for Windows Phone\", \"capabilities\": { \"versioncontrol\": { \"sourceControlType\": \"Git\"}, \"processTemplate\": {  \"templateTypeId\": \"6b724908-ef14-45cf-84f8-768b5384da45\" }}}"
 
 	var jsonStr = []byte(jsonFormat)
 
-	var baseUrl = "https://dev.azure.com/" + project + "/_apis/projects?api-version=4.1"
+	var baseUrl = "https://dev.azure.com/" + organization + "/_apis/projects?api-version=4.1"
 
 	req, err := http.NewRequest("POST", baseUrl, bytes.NewBuffer(jsonStr))
 
@@ -43,6 +50,9 @@ func CreateProject(pat string, project string) string {
 
 	fmt.Println(string(responseData))
 
-	return "id"
+	data := ProjectResponse{}
+	json.Unmarshal([]byte(responseData), &data)
+
+	return data
 
 }
