@@ -12,7 +12,7 @@ import (
 type Client struct {
 }
 
-func createProject(pat string, project string) string {
+func CreateProject(pat string, project string) string {
 
 	var jsonFormat = "{ \"name\": \"alextestBuenas\", \"description\": \"Frabrikam travel app for Windows Phone\", \"capabilities\": { \"versioncontrol\": { \"sourceControlType\": \"Git\"}, \"processTemplate\": {  \"templateTypeId\": \"6b724908-ef14-45cf-84f8-768b5384da45\" }}}"
 
